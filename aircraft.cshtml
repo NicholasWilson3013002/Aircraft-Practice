@@ -1,0 +1,88 @@
+﻿@{Layout = "_Layout.cshtml";}
+
+@{
+    var db = Database.Open("my-connection");
+    var selectQueryString = "select * from AIRCRAFT_PAGE order by AC_NUMBER";
+    var modelList = "select MOD_CODE, MOD_NAME, MOD_MANUFACTURER from MODEL order by MOD_MANUFACTURER, MOD_NAME";
+}
+
+<!-- The Modal -->
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Add New Aircraft</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form method="post" action="save-aircraft">
+                    <div class="form-group">
+                        <label for="anum">Aircraft Number:</label>
+                        <input type="text" class="form-control" id="anum" name="anum">
+                    </div>
+                    <div class="form-group">
+                        <label for="mdl">Model:</label>
+                        <select class="form-control" id="mdl" name="mdl">
+                            @foreach (var modRow in db.Query(modelList))
+                            {
+                                <option value="@modRow.MOD_CODE">@modRow.MOD_MANUFACTURER - @modRow.MOD_NAME</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ttaf">TTAF:</label>
+                        <input type="text" class="form-control" id="ttaf" name="ttaf">
+                    </div>
+                    <div class="form-group">
+                        <label for="ttel">TTEL:</label>
+                        <input type="text" class="form-control" id="ttel" name="ttel">
+                    </div>
+                    <div class="form-group">
+                        <label for="tter">TTER:</label>
+                        <input type="text" class="form-control" id="tter" name="tter">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<h1>
+    Aircraft
+    <!-- Button to Open the Modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        +
+    </button>
+</h1>
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Aircraft Number</th>
+                <th>Manufacturer</th>
+                <th>Model</th>
+                <th>TTAF</th>
+                <th>TTEL</th>
+                <th>TTER</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in db.Query(selectQueryString))
+            {
+                <tr>
+                    <td>@row.AC_NUMBER</td>
+                    <td>@row.MOD_MANUFACTURER</td>
+                    <td>@row.MOD_NAME</td>
+                    <td>@row.AC_TTAF</td>
+                    <td>@row.AC_TTEL</td>
+                    <td>@row.AC_TTER</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
