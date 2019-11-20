@@ -1,9 +1,0 @@
-﻿@{Layout = "_Layout.cshtml";}
-
-@{
-    var db = Database.Open("my-connection");
-    db.Execute("insert into AIRCRAFT (AC_NUMBER, MOD_CODE, AC_TTAF, AC_TTEL, AC_TTER) values (@0, @1, @2, @3, @4)", Request.Form["anum"], Request.Form["mdl"], Request.Form["ttaf"], Request.Form["ttel"], Request.Form["tter"]);
-}
-<div class="alert alert-success">
-    <strong>Success!</strong> Record saved.
-</div>
